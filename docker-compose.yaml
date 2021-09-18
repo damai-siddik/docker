@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+  database:
+    image: mongo:4.2.16
+    restart: always
+    environment: 
+      - MONGO_INITDB_DATABASE=docker
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+
+  app:
+    image: golang:1.17
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_URI=mongodb://root:pass@localhost:3030
+      - DB_NAME=docker
+      - DB_COLLECTION_NAME=todolist
+    depends_on:
+      - database
